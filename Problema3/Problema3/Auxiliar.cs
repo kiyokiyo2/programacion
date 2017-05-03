@@ -10,56 +10,33 @@ namespace Problema3
 {
     class Auxiliar
     {
-        public static List<string> Convertir(List<Vehiculo> vehiculos)
-        {
-            List<string> data = new List<string>();
-            foreach (Vehiculo veh in vehiculos)
-            {
-                data.Add(veh.Matricula);
-                data.Add(veh.Marca);
-                data.Add(veh.Modelo);
-                data.Add(veh.Color);
-                data.Add("|");
-            }
-
-            data.RemoveAt(data.Count - 1);
-            data.Add("$");
-            return data;
-        }
-
-
-
-        /// <summary>
-        /// Comprueba la existencia de un archivo de datos. En caso de que no exista, lo crea.
-        /// </summary>
-        public static void File_Load()
-        {
-            if (File.Exists("data.bin"))
-            {
-                string mensaje = "Se ha encontrado un fichero de datos.\nSe utilizará dicho fichero.";
-                string titulo = "Fichero encontrado";
-                var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                Read_File();
-            }
-            else
-            {
-                string mensaje = "No se ha encontrado un fichero de datos.\nSe creará uno por defecto";
-                string titulo = "Nuevo fichero";
-                var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                File.Create("data.bin");
-            }
-
-        }
+        
 
         /// <summary>
         /// Lee el archivo y lo vuelca en un List<Vehiculo> en memoria para utilizar sus datos.
         /// </summary>
-        public static void Read_File()
+        public static List<Vehiculo> Read_File()
         {
             FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.Read);
             BinaryReader leer = new BinaryReader(binario, Encoding.Unicode);
-            
-            
+            List<Vehiculo> result = new List<Vehiculo>();
+            bool lectura = true;
+            while (lectura)
+            {
+                try
+                {
+                    Vehiculo aux = new Vehiculo(leer);
+                    result.Add(aux);
+                    lectura = true;
+                }
+                catch (System.IO.EndOfStreamException)
+                {
+                    MessageBox.Show("FIN");
+                    lectura = false;
+                }
+            }
+
+            return result;
         }
 
 
@@ -69,7 +46,7 @@ namespace Problema3
         /// <param name="save">Es la List<Vehiculo> donde se encuentran los datos del programa.</param>
         public static void Save_File(List<Vehiculo> save)
         {
-            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.Write);
+            FileStream binario = new FileStream("data.bin", FileMode.OpenOrCreate, FileAccess.Write);
             BinaryWriter escribir = new BinaryWriter(binario, Encoding.Unicode);
             foreach (Vehiculo v in save)
             {

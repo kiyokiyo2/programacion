@@ -14,6 +14,10 @@ namespace Problema3
     public partial class Form1 : Form
     {
 
+        static List<Vehiculo> vehiculos;
+
+
+
 
         public Form1()
         {
@@ -21,25 +25,34 @@ namespace Problema3
             
         }
 
-            List<Vehiculo> t;
+
+            
         private void Form1_Load(object sender, EventArgs e)
         {
-            Auxiliar.File_Load();
-            t = new List<Vehiculo>();
-            Vehiculo lala = new Vehiculo("1111 BBB", "Ford", "Escort", "Burdeo");
-            Vehiculo lele = new Vehiculo("1112 BBB", "Ford", "Escort", "Burdeo");
-            Vehiculo lili = new Vehiculo("1113 BBB", "Ford", "Escort", "Burdeo");
-            Vehiculo lolo = new Vehiculo("1114 BBB", "Ford", "Escort", "Burdeo");
-            t.Add(lala);
-            t.Add(lele);
-            t.Add(lili);
-            t.Add(lolo);
-            Auxiliar.Save_File(t);
-
-            Auxiliar.Read_File();
+            File_Load();
         }
 
+        /// <summary>
+        /// Comprueba la existencia de un archivo de datos y lo carga. En caso de que no exista, lo crea.
+        /// </summary>
+        public static void File_Load()
+        {
+            if (File.Exists("data.bin"))
+            {
+                string mensaje = "Se ha encontrado un fichero de datos.\nSe utilizará dicho fichero.";
+                string titulo = "Fichero encontrado";
+                var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                vehiculos = Auxiliar.Read_File();
+            }
+            else
+            {
+                string mensaje = "No se ha encontrado un fichero de datos.\nSe creará uno por defecto";
+                string titulo = "Nuevo fichero";
+                var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                File.Create("data.bin");
+            }
 
+        }
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
