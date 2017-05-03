@@ -13,48 +13,37 @@ namespace Problema3
 {
     public partial class Form1 : Form
     {
+
+
         public Form1()
         {
             InitializeComponent();
-        }     
-              
+            
+        }
+
+            List<Vehiculo> t;
         private void Form1_Load(object sender, EventArgs e)
         {
-            File_Load();
+            Auxiliar.File_Load();
+            t = new List<Vehiculo>();
+            Vehiculo lala = new Vehiculo("1111 BBB", "Ford", "Escort", "Burdeo");
+            Vehiculo lele = new Vehiculo("1112 BBB", "Ford", "Escort", "Burdeo");
+            Vehiculo lili = new Vehiculo("1113 BBB", "Ford", "Escort", "Burdeo");
+            Vehiculo lolo = new Vehiculo("1114 BBB", "Ford", "Escort", "Burdeo");
+            t.Add(lala);
+            t.Add(lele);
+            t.Add(lili);
+            t.Add(lolo);
+            Auxiliar.Save_File(t);
+
+            Auxiliar.Read_File();
         }
 
-        private void File_Load()
+
+
+        private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (File.Exists("data.bin"))
-            {
-                string mensaje = "Se ha encontrado un fichero de datos.\nSe utilizará dicho fichero.";
-                string titulo = "Fichero encontrado";
-                var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-            }
-            else
-            {
-                string mensaje ="No se ha encontrado un fichero de datos.\nSe creará uno por defecto";
-                string titulo ="Nuevo fichero";
-                var result = MessageBox.Show(mensaje, titulo,MessageBoxButtons.OK,MessageBoxIcon.Hand);
-                File.Create("data.bin");
-            }
 
         }
-
-
-        private void Read_File()
-        {
-            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.Read);
-            BinaryReader leer = new BinaryReader(binario, Encoding.Unicode);
-
-        }
-
-        private void Save_File(List<Vehiculo> save)
-        {
-            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.Write);
-            BinaryWriter escribir = new BinaryWriter(binario, Encoding.Unicode);            
-        }
-
-
     }
 }
