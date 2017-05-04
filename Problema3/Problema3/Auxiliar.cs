@@ -17,7 +17,7 @@ namespace Problema3
         /// </summary>
         public static List<Vehiculo> Read_File()
         {
-            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.Read);
+            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.ReadWrite);
             BinaryReader leer = new BinaryReader(binario, Encoding.Unicode);
             List<Vehiculo> result = new List<Vehiculo>();
             bool lectura = true;
@@ -31,11 +31,11 @@ namespace Problema3
                 }
                 catch (System.IO.EndOfStreamException)
                 {
-                    MessageBox.Show("FIN");
+                   // MessageBox.Show("FIN");
                     lectura = false;
                 }
             }
-
+            binario.Close();
             return result;
         }
 
@@ -44,9 +44,9 @@ namespace Problema3
         /// Guarda la información de nuevo en el fichero.
         /// </summary>
         /// <param name="save">Es la List<Vehiculo> donde se encuentran los datos del programa.</param>
-        public static void Save_File(List<Vehiculo> save)
+        public static void Save_File(List<Vehiculo> save, string nombre)
         {
-            FileStream binario = new FileStream("data.bin", FileMode.OpenOrCreate, FileAccess.Write);
+            FileStream binario = new FileStream(nombre, FileMode.Create, FileAccess.Write);
             BinaryWriter escribir = new BinaryWriter(binario, Encoding.Unicode);
             foreach (Vehiculo v in save)
             {
