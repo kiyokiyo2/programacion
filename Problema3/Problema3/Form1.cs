@@ -15,6 +15,7 @@ namespace Problema3
     {
 
         static string lastItem = string.Empty;
+        
 
 
         public Form1()
@@ -68,7 +69,7 @@ namespace Problema3
                 string mensaje = "Se ha encontrado un fichero de datos.\nSe utilizará dicho fichero.";
                 string titulo = "Fichero encontrado";
                 var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                Program.vehiculos = Auxiliar.Read_File();
+                Program.vehiculos = Auxiliar.Read_File("data.bin");
                 foreach (Vehiculo veh in Program.vehiculos)
                 {
                     if (!comboBox1.Items.Contains(veh.Marca))
@@ -108,7 +109,7 @@ namespace Problema3
         }
 
         /// <summary>
-        /// Rellena el formulario con los datos contenidos en la lista.
+        /// Actualiza el formulario con los datos contenidos en la lista.
         /// </summary>
         /// <param name="index">Índice para la selección del elemento de la lista.</param>
         public void initForm(int index)
@@ -406,14 +407,14 @@ namespace Problema3
         /// <returns>La ventana de busqueda</returns>
         private static DialogResult ShowInputDialog(ref string input)
         {
-            System.Drawing.Size size = new System.Drawing.Size(300, 70);
+            Size size = new Size(300, 70);
             Form inputBox = new Form();
 
-            inputBox.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            inputBox.FormBorderStyle = FormBorderStyle.FixedDialog;
             inputBox.ClientSize = size;
             inputBox.Text = "Introduzca matrícula";
 
-            System.Windows.Forms.TextBox textBox = new TextBox();
+            TextBox textBox = new TextBox();
             textBox.Size = new Size(size.Width - 10, 23);
             textBox.Location = new Point(5, 5);
             textBox.Text = input;
@@ -442,8 +443,50 @@ namespace Problema3
             input = textBox.Text;
             return result;
         }
-        
 
+        /// <summary>
+        /// Opción del menú contextual encargada de guardar el fichero.
+        /// Se le ha añadido la opción de guardar el fichero como .bin
+        /// para poder reabrirlo más tarde con el programa de nuevo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void guardarInformeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog informe = new SaveFileDialog();
+            informe.Filter = "Archivo de texto|*.txt|Archivo de datos|*.bin";
+            informe.Title = "Guardar informe como...";
+            informe.ShowDialog();
+                if (informe.FileName != "")
+                {
+                    if (informe.FileName.Contains(".bin"))
+                    {
+                        Auxiliar.Save_File(Program.vehiculos, informe.FileName);
+                    }
+                    else
+                    {
+                        Auxiliar.generarInforme(informe.FileName);
+                    }
+                }
+        }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog abrir = new OpenFileDialog();
+            abrir.Filter = "Archivo de datos|*.bin";
+            abrir.Title = "Abrir informe";
+            abrir.ShowDialog();
+                if (abrir.FileName != "")
+                {
+                    Program.vehiculos = Auxiliar.Read_File(abrir.FileName);
+                    initForm(0);
+                }
+
+        }
+
+
+        
+        
         
 
 

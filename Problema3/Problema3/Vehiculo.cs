@@ -15,10 +15,10 @@ namespace Problema3
         string color;
     
 
-        const int TAM_MATRICULA = 20;
-        const int TAM_MARCA = 30;
-        const int TAM_MODELO = 30;
-        const int TAM_COLOR = 20;
+        const int TAM_MATRICULA = 15;
+        const int TAM_MARCA = 20;
+        const int TAM_MODELO = 40;
+        const int TAM_COLOR = 15;
         public string Color
         {
             get

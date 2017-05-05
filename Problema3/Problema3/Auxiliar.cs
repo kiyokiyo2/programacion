@@ -15,9 +15,11 @@ namespace Problema3
         /// <summary>
         /// Lee el archivo y lo vuelca en un List<Vehiculo> en memoria para utilizar sus datos.
         /// </summary>
-        public static List<Vehiculo> Read_File()
+        /// <param name="name">Ruta del fichero</param>
+        /// <returns>List con todos los vehículos que se encontraban en el fichero</returns>
+        public static List<Vehiculo> Read_File(string name)
         {
-            FileStream binario = new FileStream("data.bin", FileMode.Open, FileAccess.ReadWrite);
+            FileStream binario = new FileStream(name, FileMode.Open, FileAccess.ReadWrite);
             BinaryReader leer = new BinaryReader(binario, Encoding.Unicode);
             List<Vehiculo> result = new List<Vehiculo>();
             bool lectura = true;
@@ -55,7 +57,26 @@ namespace Problema3
             binario.Close();
         }
 
+        public static void generarInforme(string name)
+        {
+            int count = 1;
+            StreamWriter salida = new StreamWriter(name);
 
+            salida.WriteLine("--- LISTADO DE VEHÍCULOS ---\n");
+            salida.WriteLine("-- NÚMERO TOTAL DE VEHÍCULOS: {0} --\n", Program.vehiculos.Count);
+            salida.WriteLine(" ");
+            foreach (Vehiculo veh in Program.vehiculos)
+            {
+                salida.WriteLine("-- Vehículo nº {0} --", count);
+                salida.WriteLine("Matrícula: {0} ", veh.Matricula);
+                salida.WriteLine("Marca: {0} ", veh.Marca);
+                salida.WriteLine("Modelo: {0} ", veh.Modelo);
+                salida.WriteLine("Color: {0} ", veh.Color);
+                salida.WriteLine("-------------------\n");
+                count++;
+            }
+            salida.Dispose();
+        }
         
     }
 }

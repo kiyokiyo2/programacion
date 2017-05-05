@@ -218,17 +218,17 @@
             // 
             // abrirToolStripMenuItem
             // 
-            this.abrirToolStripMenuItem.Enabled = false;
             this.abrirToolStripMenuItem.Name = "abrirToolStripMenuItem";
             this.abrirToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.abrirToolStripMenuItem.Text = "Abrir";
+            this.abrirToolStripMenuItem.Click += new System.EventHandler(this.abrirToolStripMenuItem_Click);
             // 
             // guardarInformeToolStripMenuItem
             // 
-            this.guardarInformeToolStripMenuItem.Enabled = false;
             this.guardarInformeToolStripMenuItem.Name = "guardarInformeToolStripMenuItem";
             this.guardarInformeToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.guardarInformeToolStripMenuItem.Text = "Guardar Informe";
+            this.guardarInformeToolStripMenuItem.Click += new System.EventHandler(this.guardarInformeToolStripMenuItem_Click);
             // 
             // salirToolStripMenuItem
             // 
@@ -248,7 +248,7 @@
             // matrículaToolStripMenuItem
             // 
             this.matrículaToolStripMenuItem.Name = "matrículaToolStripMenuItem";
-            this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.matrículaToolStripMenuItem.Text = "Matrícula";
             this.matrículaToolStripMenuItem.Click += new System.EventHandler(this.matrículaToolStripMenuItem_Click);
             // 
