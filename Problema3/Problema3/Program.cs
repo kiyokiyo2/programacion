@@ -21,5 +21,6 @@ namespace Problema3
 
         }
         public static List<Vehiculo> vehiculos;
+        public static List<Vehiculo> bbdd;
     }
 }

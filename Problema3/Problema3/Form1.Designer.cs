@@ -50,6 +50,8 @@
             this.salirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buscarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.matrículaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.volcarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.baseDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -199,7 +201,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.archivoToolStripMenuItem,
-            this.buscarToolStripMenuItem});
+            this.buscarToolStripMenuItem,
+            this.volcarToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(283, 24);
@@ -251,6 +254,21 @@
             this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.matrículaToolStripMenuItem.Text = "Matrícula";
             this.matrículaToolStripMenuItem.Click += new System.EventHandler(this.matrículaToolStripMenuItem_Click);
+            // 
+            // volcarToolStripMenuItem
+            // 
+            this.volcarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.baseDeDatosToolStripMenuItem});
+            this.volcarToolStripMenuItem.Name = "volcarToolStripMenuItem";
+            this.volcarToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.volcarToolStripMenuItem.Text = "Volcar";
+            // 
+            // baseDeDatosToolStripMenuItem
+            // 
+            this.baseDeDatosToolStripMenuItem.Name = "baseDeDatosToolStripMenuItem";
+            this.baseDeDatosToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.baseDeDatosToolStripMenuItem.Text = "Base de datos";
+            this.baseDeDatosToolStripMenuItem.Click += new System.EventHandler(this.baseDeDatosToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -367,6 +385,8 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.ToolStripButton Ir;
+        private System.Windows.Forms.ToolStripMenuItem volcarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem baseDeDatosToolStripMenuItem;
     }
 }
 

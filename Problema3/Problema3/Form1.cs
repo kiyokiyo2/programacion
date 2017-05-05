@@ -15,13 +15,15 @@ namespace Problema3
     {
 
         static string lastItem = string.Empty;
-        
+        static string condata = "Server=82.223.113.38;Database=quo605;User ID=qxt173;Password=Vehiculos12;";
+
 
 
         public Form1()
         {
             InitializeComponent();
-            Program.vehiculos = new List<Vehiculo>();     
+            Program.vehiculos = new List<Vehiculo>();
+            
         }
 
 
@@ -33,12 +35,13 @@ namespace Problema3
     
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Auxiliar.loadDatabase(condata, "vehiculos");
             File_Load();
-
+            
             
            /* 
             *   Código utilizado para rellenar el archivo con datos.
-            * 
+            *
             
             List<Vehiculo> t = new List<Vehiculo>();
             Vehiculo lala = new Vehiculo("1111 BBB", "Ford", "Escort", "Burdeo");
@@ -484,12 +487,12 @@ namespace Problema3
 
         }
 
+        private void baseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            Auxiliar.saveDatabase(condata, "vehiculos");
+        }
 
         
-        
-        
-
-
-
     }
 }
