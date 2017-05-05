@@ -54,5 +54,8 @@ namespace Problema3
             }
             binario.Close();
         }
+
+
+        
     }
 }

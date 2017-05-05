@@ -14,17 +14,22 @@ namespace Problema3
     public partial class Form1 : Form
     {
 
-        static List<Vehiculo> vehiculos;
+        static string lastItem = string.Empty;
 
 
         public Form1()
         {
             InitializeComponent();
-            vehiculos = new List<Vehiculo>();     
+            Program.vehiculos = new List<Vehiculo>();     
         }
 
 
-            
+        /// <summary>
+        /// Se ejecuta al cargar el formulario
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+    
         private void Form1_Load(object sender, EventArgs e)
         {
             File_Load();
@@ -63,8 +68,16 @@ namespace Problema3
                 string mensaje = "Se ha encontrado un fichero de datos.\nSe utilizará dicho fichero.";
                 string titulo = "Fichero encontrado";
                 var result = MessageBox.Show(mensaje, titulo, MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                vehiculos = Auxiliar.Read_File();
+                Program.vehiculos = Auxiliar.Read_File();
+                foreach (Vehiculo veh in Program.vehiculos)
+                {
+                    if (!comboBox1.Items.Contains(veh.Marca))
+                    { 
+                        comboBox1.Items.Add(veh.Marca);
+                    }
+                }
                 initForm(0);
+                    
                 
             }
             else
@@ -84,7 +97,7 @@ namespace Problema3
         /// <summary>
         /// Inicializa el formulario cuando no hay datos que mostrar
         /// </summary>
-        private void initForm()
+        public void initForm()
         {
             bindingNavigatorPositionItem.Text = "1";
             bindingNavigatorCountItem.Text = "de 1";
@@ -98,18 +111,18 @@ namespace Problema3
         /// Rellena el formulario con los datos contenidos en la lista.
         /// </summary>
         /// <param name="index">Índice para la selección del elemento de la lista.</param>
-        private void initForm(int index)
+        public void initForm(int index)
         {
             try
             {
                 if (index >= 0)
                 {
-                    bindingNavigatorCountItem.Text = "de " + vehiculos.Count.ToString();
+                    bindingNavigatorCountItem.Text = "de " + Program.vehiculos.Count.ToString();
                     bindingNavigatorPositionItem.Text = (index + 1).ToString();
-                    textBox1.Text = vehiculos[index].Matricula;
-                    comboBox1.Text = vehiculos[index].Marca;
-                    textBox2.Text = vehiculos[index].Modelo;
-                    textBox3.Text = vehiculos[index].Color;
+                    textBox1.Text = Program.vehiculos[index].Matricula;
+                    comboBox1.Text = Program.vehiculos[index].Marca;
+                    textBox2.Text = Program.vehiculos[index].Modelo;
+                    textBox3.Text = Program.vehiculos[index].Color;
                 }
                 else
                 {
@@ -118,9 +131,9 @@ namespace Problema3
             }
             catch (System.ArgumentOutOfRangeException)
             {
-                if (vehiculos.Count > 0)
+                if (Program.vehiculos.Count > 0)
                 {
-                    initForm(vehiculos.Count - 1);
+                    initForm(Program.vehiculos.Count - 1);
                 }
                 else
                 {
@@ -132,14 +145,16 @@ namespace Problema3
         }
 
 
-        
-        //TODO ERROR PQ COGE EL NUMERO DEL CUADRO Y AL 
-        //TODO CAMBIAR DE CUADRO SE CAMBIA OTRO REGISTRO DISTINTO.
+        // TODO: Unir las dos funciones en una sola
         private void modList()
         {
-            vehiculos[int.Parse(bindingNavigatorPositionItem.Text)-1] = new Vehiculo(textBox1.Text,comboBox1.Text,textBox2.Text,textBox3.Text);            
+            Program.vehiculos[int.Parse(bindingNavigatorPositionItem.Text)-1] = new Vehiculo(textBox1.Text,comboBox1.Text,textBox2.Text,textBox3.Text);            
         }
 
+        private void modList(int index)
+        {
+            Program.vehiculos[index - 1] = new Vehiculo(textBox1.Text, comboBox1.Text, textBox2.Text, textBox3.Text);
+        }
 
 
 
@@ -163,7 +178,7 @@ namespace Problema3
             SaveFileDialog save = new SaveFileDialog();            
             if (result == DialogResult.Yes)
             {
-                Auxiliar.Save_File(vehiculos, "data.bin");
+                Auxiliar.Save_File(Program.vehiculos, "data.bin");
             }
             else
             {
@@ -177,7 +192,7 @@ namespace Problema3
                     save.ShowDialog();
                     if (save.FileName != "")
                     {
-                        Auxiliar.Save_File(vehiculos, save.FileName);                        
+                        Auxiliar.Save_File(Program.vehiculos, save.FileName);                        
                     }
                 }                
             }
@@ -203,16 +218,16 @@ namespace Problema3
 
 
         /// <summary>
-        /// Añade un nuevo elemento a la lista de vehiculos.
+        /// Añade un nuevo elemento a la lista de Program.vehiculos.
         /// </summary>
         private void bindingNavigatorAddNewItem_Click(object sender, EventArgs e)
         {
             if (textBox1.Text != "" && comboBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
             {
                 Vehiculo nuevo = new Vehiculo(textBox1.Text, comboBox1.Text, textBox2.Text, textBox3.Text);
-                vehiculos.Add(nuevo);
-                initForm(vehiculos.Count - 1);
-                if (vehiculos.Count > 0)
+                Program.vehiculos.Add(nuevo);
+                initForm(Program.vehiculos.Count - 1);
+                if (Program.vehiculos.Count > 0)
                 {
                     bindingNavigatorDeleteItem.Enabled = true;
                 }
@@ -251,7 +266,7 @@ namespace Problema3
         private void bindingNavigatorMoveLastItem_Click(object sender, EventArgs e)
         {
             modList();
-            initForm(vehiculos.Count - 1);
+            initForm(Program.vehiculos.Count - 1);
         }
 
         /// <summary>
@@ -284,10 +299,10 @@ namespace Problema3
                 SaveFileDialog save = new SaveFileDialog();
                 if (result == DialogResult.Yes)
                 {
-                    vehiculos.RemoveAt(int.Parse(bindingNavigatorPositionItem.Text) - 1);
+                    Program.vehiculos.RemoveAt(int.Parse(bindingNavigatorPositionItem.Text) - 1);
                     initForm(int.Parse(bindingNavigatorPositionItem.Text) - 2);
                 }     
-                if (vehiculos.Count == 0)
+                if (Program.vehiculos.Count == 0)
                 {
                     bindingNavigatorDeleteItem.Enabled = false;
                 }
@@ -301,11 +316,135 @@ namespace Problema3
                 
         }
 
+        /// <summary>
+        /// Se ha añadido al bindingNavigation un botón para navegar por los elementos
+        /// haciendo click en su icono. Esta función mueve al programa de registro. Cumple
+        /// el mismo objetivo que el KeypPress cuando se pulsa 'intro'
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Ir_Click(object sender, EventArgs e)
-        {
-            modList();
+        {            
             initForm(int.Parse(bindingNavigatorPositionItem.Text) - 1);
         }
+
+
+        /// <summary>
+        /// Función encargada de guardar el index elemento donde se encuentra para
+        /// actualizarlo antes de que se cambie el index.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bindingNavigatorPositionItem_Click(object sender, EventArgs e)
+        {
+           
+            lastItem = bindingNavigatorPositionItem.Text;
+            modList(int.Parse(lastItem));
+            lastItem = string.Empty;
+        }
+
+        /// <summary>
+        /// Se repite el proceso de la funcion 'bindingNavigatorPositionItem_Click' ya que el 
+        /// usuario puede hacer click y arrastrar para hacer selección del texto.
+        /// Solo se ejecuta si la selección es de más de un carácter.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void bindingNavigatorPositionItem_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (bindingNavigatorPositionItem.SelectionLength > 0)
+            {
+                lastItem = bindingNavigatorPositionItem.Text;
+                modList(int.Parse(lastItem));
+                lastItem = string.Empty;
+            }
+        }
+
+
+        /// <summary>
+        /// Opción del menu contextual que se encarga de buscar el 
+        /// vehículo cuya matrícula es indicada.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void matrículaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string input = string.Empty;
+            int index = 0;
+            bool found = false;
+
+            ShowInputDialog(ref input);
+            if (input != string.Empty)
+            {
+                foreach (Vehiculo veh in Program.vehiculos)
+                {
+                    if (veh.Matricula == input)
+                    {
+                        found = true;
+                        break;
+                    }
+                    index++;
+                }
+
+                if (found)
+                {
+                    MessageBox.Show("Se ha encontrado el vehículo con matrícula " + input, "Vehículo encontrado", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    initForm(index);
+                }
+                else
+                {
+                    MessageBox.Show("No se ha encontrado el vehículo con matrícula " + input, "Vehículo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Función encargada de generar un cuadro de búsqueda para 
+        /// la matrícula de un vehículo. 
+        /// </summary>
+        /// <param name="input">String pasado por referencia que almacena la cadena introducida</param>
+        /// <returns>La ventana de busqueda</returns>
+        private static DialogResult ShowInputDialog(ref string input)
+        {
+            System.Drawing.Size size = new System.Drawing.Size(300, 70);
+            Form inputBox = new Form();
+
+            inputBox.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            inputBox.ClientSize = size;
+            inputBox.Text = "Introduzca matrícula";
+
+            System.Windows.Forms.TextBox textBox = new TextBox();
+            textBox.Size = new Size(size.Width - 10, 23);
+            textBox.Location = new Point(5, 5);
+            textBox.Text = input;
+            inputBox.Controls.Add(textBox);
+
+            Button buscarBoton = new Button();
+            buscarBoton.DialogResult = DialogResult.OK;
+            buscarBoton.Name = "buscarBoton";
+            buscarBoton.Size = new Size(75, 23);
+            buscarBoton.Text = "Buscar";
+            buscarBoton.Location = new Point(size.Width - 80 - 80, 39);
+            inputBox.Controls.Add(buscarBoton);
+
+            Button cancelBoton = new Button();
+            cancelBoton.DialogResult = DialogResult.Cancel;
+            cancelBoton.Name = "cancelBoton";
+            cancelBoton.Size = new Size(75, 23);
+            cancelBoton.Text = "Cancelar";
+            cancelBoton.Location = new Point(size.Width - 80, 39);
+            inputBox.Controls.Add(cancelBoton);
+
+            inputBox.AcceptButton = buscarBoton;
+            inputBox.CancelButton = cancelBoton;
+
+            DialogResult result = inputBox.ShowDialog();
+            input = textBox.Text;
+            return result;
+        }
+        
+
+        
 
 
 

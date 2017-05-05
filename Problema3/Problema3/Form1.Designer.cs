@@ -125,6 +125,8 @@
             this.bindingNavigatorPositionItem.Text = "0";
             this.bindingNavigatorPositionItem.ToolTipText = "Posición actual";
             this.bindingNavigatorPositionItem.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.bindingNavigatorPositionItem_KeyPress);
+            this.bindingNavigatorPositionItem.Click += new System.EventHandler(this.bindingNavigatorPositionItem_Click);
+            this.bindingNavigatorPositionItem.MouseUp += new System.Windows.Forms.MouseEventHandler(this.bindingNavigatorPositionItem_MouseUp);
             // 
             // bindingNavigatorCountItem
             // 
@@ -245,10 +247,10 @@
             // 
             // matrículaToolStripMenuItem
             // 
-            this.matrículaToolStripMenuItem.Enabled = false;
             this.matrículaToolStripMenuItem.Name = "matrículaToolStripMenuItem";
             this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.matrículaToolStripMenuItem.Text = "Matrícula";
+            this.matrículaToolStripMenuItem.Click += new System.EventHandler(this.matrículaToolStripMenuItem_Click);
             // 
             // label1
             // 
