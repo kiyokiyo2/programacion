@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms;
 using System.ComponentModel;
+using System.Threading;
+
 
 using System.Data;
 using MySql.Data.MySqlClient;
@@ -15,10 +17,11 @@ namespace Problema3
     
     class Auxiliar
     {
-        
+
+        #region(Ficheros)
 
         /// <summary>
-        /// Lee el archivo y lo vuelca en un List<Vehiculo> en memoria para utilizar sus datos.
+        /// Lee el archivo y lo vuelca en una lista del tipo Vehiculo en memoria para utilizar sus datos.
         /// </summary>
         /// <param name="name">Ruta del fichero</param>
         /// <returns>List con todos los vehículos que se encontraban en el fichero</returns>
@@ -50,7 +53,8 @@ namespace Problema3
         /// <summary>
         /// Guarda la información de nuevo en el fichero.
         /// </summary>
-        /// <param name="save">Es la List<Vehiculo> donde se encuentran los datos del programa.</param>
+        /// <param name="save">Es la lista de tipo Vehiculo donde se encuentran los datos del programa.</param>
+        /// <param name="nombre">Nombre con el que se desea guardar el fichero. Incluye la ruta absoluta</param>
         public static void Save_File(List<Vehiculo> save, string nombre)
         {
             FileStream binario = new FileStream(nombre, FileMode.Create, FileAccess.Write);
@@ -62,6 +66,10 @@ namespace Problema3
             binario.Close();
         }
 
+        /// <summary>
+        /// Guarda los datos del programa en un archivo .txt legible 
+        /// </summary>
+        /// <param name="name">Nombre con el que se desea guardar el fichero. Incluye la ruta absoluta</param>
         public static void generarInforme(string name)
         {
             int count = 1;
@@ -85,9 +93,15 @@ namespace Problema3
 
 
 
-        
+        #endregion
 
-        public static void loadDatabase(string conn, string database)
+        /// <summary>
+        /// Se encarga de conectar a la base de datos y descargar la información de la tabla indicada
+        /// </summary>
+        /// <param name="conn">Parámetros de la conexión</param>
+        /// <param name="database">Tabla de la base de datos a la que se va a conectar</param>
+        /// <returns>True si la conexión ha sido exitosa.</returns>
+        public static bool loadDatabase(string conn, string database)
         {
             
             MySqlConnection conecta = new MySqlConnection(conn);
@@ -96,104 +110,44 @@ namespace Problema3
             {                
                 conecta.Open();
                 MySqlCommand com = conecta.CreateCommand();
-                //com.CommandText = "update vehiculos set marca='lala' where matricula='123'";
                 com.CommandText = "select * from " + database;
                 IDataReader select = com.ExecuteReader();
-                //com.ExecuteNonQuery();
                 
                 while (select.Read())
                 {
                     Program.bbdd.Add(new Vehiculo((string)select["matricula"], (string)select["marca"], (string)select["modelo"], (string)select["color"]));
                 }
                 conecta.Close();
-
-                /*
-                string matriculas = "select matricula from vehiculos";
-                MySqlDataAdapter adapt = new MySqlDataAdapter(matriculas, conecta);
-                adapt.SelectCommand.CommandType = CommandType.Text;
-                DataTable comparer = new DataTable();
-                adapt.Fill(comparer);
-                //conecta.Close();
-                foreach (DataRow dr in comparer.Rows)
-                {
-                    Console.WriteLine(string.Format("user_id = {0}", dr["matricula"].ToString()));
-                   
-                }
-                conecta.Open();
-               
-                conecta.Close();*/
-                MessageBox.Show("SSSS");
+                MessageBox.Show("Conexión realizada con éxito.");
+                return true;
             }
             catch (Exception)
             {
-                MessageBox.Show("NNN");
+                MessageBox.Show("Conexión fallida. Compruebe su conexión a internet y vuelva a intentarlo.");
+                return false;
                 
-            }
-            finally
-            {
-                conecta.Close();
-            }                  
+            }                         
         }
         
-        public static void saveDatabase(string conn, string database)
-        {
-            bool existe = false;
-            Wait barra = new Wait(Program.vehiculos.Count);
-            
-            
-            if (Program.bbdd == null)
-            {
-                loadDatabase(conn, database);
-            }
-
-            MySqlConnection save = new MySqlConnection(conn);
-            
-            if (Program.bbdd.Count != 0)
-            {
-                for (int i = 0; i < Program.vehiculos.Count; i++)
-                {
-                    for (int j = 0; j < Program.bbdd.Count; j++) 
-                    {
-                        if (Program.vehiculos[i].Matricula == Program.bbdd[j].Matricula)
-                        {
-                            existe = true;
-                            Query(save, i, j, existe);                        
-                            break;
-                        }
-
-                    }
-                    barra.backgroundWorker1_DoWork(barra, null);
-                    if (!existe)
-                    {
-                        Query(save, i, 0, existe);
-                    }
-                }
-            }
-            else
-            {
-                barra.backgroundWorker1_DoWork(barra, null);
-                for (int i = 0; i < Program.vehiculos.Count; i++)
-                {
-                    Query(save, i, 0, existe);
-                }
-            }
-
-            MySqlConnection conecta = new MySqlConnection(conn);
-
-        }
-
-        public static void Query(MySqlConnection save, int i, int j, bool existe)
+        
+        /// <summary>
+        /// Actualiza o añade un registro a la base de datos
+        /// </summary>
+        /// <param name="save">Conexión a la base de datos</param>
+        /// <param name="i">Contador de la lista de vehículos. Indica qué miembro se va a leer</param>
+        /// <param name="existe">Es verdadero si el elemento existe y hay que actualizarlo</param>
+        public static void Query(MySqlConnection save, int i, bool existe)
         {
             save.Open();
             MySqlCommand com = save.CreateCommand();
             string query;
             if (existe)
             {
-                query = "";// update vehiculos set matricula='" + Program.vehiculos[i].Matricula + "','marca='" + Program.vehiculos[i].Marca + "', modelo='" + Program.vehiculos[i].Modelo + "', color='" + Program.vehiculos[i].Color + "' where matricula='" + Program.vehiculos[i].Matricula + "'";
+                query = "update vehiculos set matricula = '" + Program.vehiculos[i].Matricula + "', marca = '" + Program.vehiculos[i].Marca + "', modelo = '" + Program.vehiculos[i].Modelo + "', color = '" + Program.vehiculos[i].Color + "' where matricula = '" + Program.vehiculos[i].Matricula + "';";
             }
             else
             {
-                query = "insert into vehiculos values('"+Program.vehiculos[i].Matricula+"','"+ Program.vehiculos[i].Marca + "','"+ Program.vehiculos[i].Modelo + "','"+ Program.vehiculos[i].Color+"');";
+                query = "insert into vehiculos values('" + Program.vehiculos[i].Matricula + "','" + Program.vehiculos[i].Marca + "','" + Program.vehiculos[i].Modelo + "','" + Program.vehiculos[i].Color + "');";
             }
             com.CommandText = query;
             com.ExecuteNonQuery();

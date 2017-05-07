@@ -51,7 +51,8 @@
             this.buscarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.matrículaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.volcarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.baseDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.volcarMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.descargarMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -59,6 +60,10 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.progBar = new System.Windows.Forms.ProgressBar();
+            this.progText = new System.Windows.Forms.Label();
+            this.progLabel = new System.Windows.Forms.Label();
+            this.conectarALaBaseDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +93,7 @@
             this.bindingNavigatorDeleteItem});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(283, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(291, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -205,7 +210,7 @@
             this.volcarToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(283, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(291, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -258,17 +263,28 @@
             // volcarToolStripMenuItem
             // 
             this.volcarToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.baseDeDatosToolStripMenuItem});
+            this.conectarALaBaseDeDatosToolStripMenuItem,
+            this.volcarMenu,
+            this.descargarMenu});
             this.volcarToolStripMenuItem.Name = "volcarToolStripMenuItem";
-            this.volcarToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.volcarToolStripMenuItem.Text = "Volcar";
+            this.volcarToolStripMenuItem.Size = new System.Drawing.Size(91, 20);
+            this.volcarToolStripMenuItem.Text = "Base de datos";
             // 
-            // baseDeDatosToolStripMenuItem
+            // volcarMenu
             // 
-            this.baseDeDatosToolStripMenuItem.Name = "baseDeDatosToolStripMenuItem";
-            this.baseDeDatosToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
-            this.baseDeDatosToolStripMenuItem.Text = "Base de datos";
-            this.baseDeDatosToolStripMenuItem.Click += new System.EventHandler(this.baseDeDatosToolStripMenuItem_Click);
+            this.volcarMenu.Enabled = false;
+            this.volcarMenu.Name = "volcarMenu";
+            this.volcarMenu.Size = new System.Drawing.Size(218, 22);
+            this.volcarMenu.Text = "Volcar";
+            this.volcarMenu.Click += new System.EventHandler(this.baseDeDatosToolStripMenuItem_Click);
+            // 
+            // descargarMenu
+            // 
+            this.descargarMenu.Enabled = false;
+            this.descargarMenu.Name = "descargarMenu";
+            this.descargarMenu.Size = new System.Drawing.Size(218, 22);
+            this.descargarMenu.Text = "Descargar BBDD";
+            this.descargarMenu.Click += new System.EventHandler(this.mostrarBBDDToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -327,11 +343,47 @@
             this.textBox3.Size = new System.Drawing.Size(121, 20);
             this.textBox3.TabIndex = 10;
             // 
+            // progBar
+            // 
+            this.progBar.Location = new System.Drawing.Point(99, 218);
+            this.progBar.Name = "progBar";
+            this.progBar.Size = new System.Drawing.Size(121, 23);
+            this.progBar.TabIndex = 11;
+            // 
+            // progText
+            // 
+            this.progText.AutoSize = true;
+            this.progText.Location = new System.Drawing.Point(226, 225);
+            this.progText.Name = "progText";
+            this.progText.Size = new System.Drawing.Size(0, 13);
+            this.progText.TabIndex = 12;
+            // 
+            // progLabel
+            // 
+            this.progLabel.AutoSize = true;
+            this.progLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.progLabel.Location = new System.Drawing.Point(31, 225);
+            this.progLabel.Name = "progLabel";
+            this.progLabel.Size = new System.Drawing.Size(57, 13);
+            this.progLabel.TabIndex = 13;
+            this.progLabel.Text = "Progreso";
+            // 
+            // conectarALaBaseDeDatosToolStripMenuItem
+            // 
+            this.conectarALaBaseDeDatosToolStripMenuItem.Name = "conectarALaBaseDeDatosToolStripMenuItem";
+            this.conectarALaBaseDeDatosToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.conectarALaBaseDeDatosToolStripMenuItem.Text = "Conectar a la base de datos";
+            this.conectarALaBaseDeDatosToolStripMenuItem.Click += new System.EventHandler(this.conectarALaBaseDeDatosToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(283, 254);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(291, 254);
+            this.Controls.Add(this.progLabel);
+            this.Controls.Add(this.progText);
+            this.Controls.Add(this.progBar);
             this.Controls.Add(this.textBox3);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
@@ -342,6 +394,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.comboBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "Form1";
@@ -386,7 +439,12 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.ToolStripButton Ir;
         private System.Windows.Forms.ToolStripMenuItem volcarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem baseDeDatosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem volcarMenu;
+        private System.Windows.Forms.ProgressBar progBar;
+        private System.Windows.Forms.Label progText;
+        private System.Windows.Forms.Label progLabel;
+        private System.Windows.Forms.ToolStripMenuItem descargarMenu;
+        private System.Windows.Forms.ToolStripMenuItem conectarALaBaseDeDatosToolStripMenuItem;
     }
 }
 

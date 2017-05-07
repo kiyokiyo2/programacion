@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MySql.Data.MySqlClient;
 
 namespace Problema3
 {
@@ -18,11 +19,13 @@ namespace Problema3
         static string condata = "Server=82.223.113.38;Database=quo605;User ID=qxt173;Password=Vehiculos12;";
 
 
-
         public Form1()
         {
             InitializeComponent();
             Program.vehiculos = new List<Vehiculo>();
+            progBar.Visible = false;
+            progLabel.Visible = false;
+            progText.Visible = false;
             
         }
 
@@ -148,16 +151,33 @@ namespace Problema3
             
         }
 
+        
 
-        // TODO: Unir las dos funciones en una sola
-        private void modList()
-        {
-            Program.vehiculos[int.Parse(bindingNavigatorPositionItem.Text)-1] = new Vehiculo(textBox1.Text,comboBox1.Text,textBox2.Text,textBox3.Text);            
-        }
-
+        // 
+        /// <summary>
+        /// Se controla si quiere o no guardar los cambios realizados en los campos
+        /// antes de cambiar de registro
+        /// </summary>
+        /// <param name="index">Indica el registro en el que se encuentra. 
+        /// Vale (-1) si es el mismo que está abierto
+        /// Vale otro para cuando se indica el número en el recuadro</param>
         private void modList(int index)
-        {
-            Program.vehiculos[index - 1] = new Vehiculo(textBox1.Text, comboBox1.Text, textBox2.Text, textBox3.Text);
+        {            
+            if (Program.vehiculos[int.Parse(bindingNavigatorPositionItem.Text) - 1].Matricula != textBox1.Text)
+            {
+                if (MessageBox.Show("", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    if (index == -1)
+                    {
+                        Program.vehiculos[int.Parse(bindingNavigatorPositionItem.Text) - 1] = new Vehiculo(textBox1.Text, comboBox1.Text, textBox2.Text, textBox3.Text);
+                    }
+                    else
+                    {
+                        Program.vehiculos[index - 1] = new Vehiculo(textBox1.Text, comboBox1.Text, textBox2.Text, textBox3.Text);
+                    }
+                   
+                }
+            }
         }
 
 
@@ -203,11 +223,154 @@ namespace Problema3
             Application.Exit();
         }
 
+        /// <summary>
+        /// Opción del menu contextual que se encarga de buscar el 
+        /// vehículo cuya matrícula es indicada.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void matrículaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string input = string.Empty;
+            int index = 0;
+            bool found = false;
+
+            ShowInputDialog(ref input);
+            if (input != string.Empty)
+            {
+                foreach (Vehiculo veh in Program.vehiculos)
+                {
+                    if (veh.Matricula == input)
+                    {
+                        found = true;
+                        break;
+                    }
+                    index++;
+                }
+
+                if (found)
+                {
+                    MessageBox.Show("Se ha encontrado el vehículo con matrícula " + input, "Vehículo encontrado", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                    initForm(index);
+                }
+                else
+                {
+                    MessageBox.Show("No se ha encontrado el vehículo con matrícula " + input, "Vehículo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Función encargada de generar un cuadro de búsqueda para 
+        /// la matrícula de un vehículo. 
+        /// </summary>
+        /// <param name="input">String pasado por referencia que almacena la cadena introducida</param>
+        /// <returns>La ventana de busqueda</returns>
+        private static DialogResult ShowInputDialog(ref string input)
+        {
+            Size size = new Size(300, 70);
+            Form inputBox = new Form();
+
+            inputBox.FormBorderStyle = FormBorderStyle.FixedDialog;
+            inputBox.ClientSize = size;
+            inputBox.Text = "Introduzca matrícula";
+
+            TextBox textBox = new TextBox();
+            textBox.Size = new Size(size.Width - 10, 23);
+            textBox.Location = new Point(5, 5);
+            textBox.Text = input;
+            inputBox.Controls.Add(textBox);
+
+            Button buscarBoton = new Button();
+            buscarBoton.DialogResult = DialogResult.OK;
+            buscarBoton.Name = "buscarBoton";
+            buscarBoton.Size = new Size(75, 23);
+            buscarBoton.Text = "Buscar";
+            buscarBoton.Location = new Point(size.Width - 80 - 80, 39);
+            inputBox.Controls.Add(buscarBoton);
+
+            Button cancelBoton = new Button();
+            cancelBoton.DialogResult = DialogResult.Cancel;
+            cancelBoton.Name = "cancelBoton";
+            cancelBoton.Size = new Size(75, 23);
+            cancelBoton.Text = "Cancelar";
+            cancelBoton.Location = new Point(size.Width - 80, 39);
+            inputBox.Controls.Add(cancelBoton);
+
+            inputBox.AcceptButton = buscarBoton;
+            inputBox.CancelButton = cancelBoton;
+
+            DialogResult result = inputBox.ShowDialog();
+            input = textBox.Text;
+            return result;
+        }
+
+        /// <summary>
+        /// Opción del menú contextual encargada de guardar el fichero.
+        /// Se le ha añadido la opción de guardar el fichero como .bin
+        /// para poder reabrirlo más tarde con el programa de nuevo.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void guardarInformeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog informe = new SaveFileDialog();
+            informe.Filter = "Archivo de texto|*.txt|Archivo de datos|*.bin";
+            informe.Title = "Guardar informe como...";
+            informe.ShowDialog();
+            if (informe.FileName != "")
+            {
+                if (informe.FileName.Contains(".bin"))
+                {
+                    Auxiliar.Save_File(Program.vehiculos, informe.FileName);
+                }
+                else
+                {
+                    Auxiliar.generarInforme(informe.FileName);
+                }
+            }
+        }
+
+        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog abrir = new OpenFileDialog();
+            abrir.Filter = "Archivo de datos|*.bin";
+            abrir.Title = "Abrir informe";
+            abrir.ShowDialog();
+            if (abrir.FileName != "")
+            {
+                Program.vehiculos = Auxiliar.Read_File(abrir.FileName);
+                initForm(0);
+            }
+
+        }
+
+
+        private void baseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveDatabase(condata, "vehiculos");
+        }
+
+        private void mostrarBBDDToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MostrarDatos aux = new MostrarDatos();
+            aux.ShowDialog();
+        }
+
+        private void conectarALaBaseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Auxiliar.loadDatabase(condata, "vehiculos"))
+            {
+                volcarMenu.Enabled = true;
+                descargarMenu.Enabled = true;
+            }
+        }
 
 
         // 
-        // // //        CONTROLES DE LA
-        // // //        BARRA DE NAVEGACIÓN
+        // // //  // // //  // // //  // // //  // // //  // // //       CONTROLES DE LA
+        // // //  // // //  // // //  // // //  // // //  // // //       BARRA DE NAVEGACIÓN
         //
         
 
@@ -216,7 +379,7 @@ namespace Problema3
         /// </summary>
         private void bindingNavigatorMoveNextItem_Click(object sender, EventArgs e)
         {
-            modList();
+            modList(-1);
             initForm(int.Parse(bindingNavigatorPositionItem.Text));
         }
 
@@ -249,7 +412,7 @@ namespace Problema3
         /// </summary>
         private void bindingNavigatorMovePreviousItem_Click(object sender, EventArgs e)
         {
-            modList();
+            modList(-1);
             initForm(int.Parse(bindingNavigatorPositionItem.Text) -2);
         }
 
@@ -259,7 +422,7 @@ namespace Problema3
         /// </summary>
         private void bindingNavigatorMoveFirstItem_Click(object sender, EventArgs e)
         {
-            modList();
+            modList(-1);
             initForm(0);
         }
 
@@ -269,7 +432,7 @@ namespace Problema3
         /// </summary>
         private void bindingNavigatorMoveLastItem_Click(object sender, EventArgs e)
         {
-            modList();
+            modList(-1);
             initForm(Program.vehiculos.Count - 1);
         }
 
@@ -278,6 +441,7 @@ namespace Problema3
         /// Se incluye el evento 'intro' para que pueda acceder al registro indicado.
         /// </summary>
         /// <param name="e">Tecla que se ha pulsado para ser introducida en el campo</param>
+        /// <param name="sender"></param>
         private void bindingNavigatorPositionItem_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == Convert.ToChar(Keys.Enter))
@@ -365,134 +529,77 @@ namespace Problema3
         }
 
 
+        
+        
         /// <summary>
-        /// Opción del menu contextual que se encarga de buscar el 
-        /// vehículo cuya matrícula es indicada.
+        /// Vuelca los datos que se están visualizando en una base de datos
+        /// MySQL remota.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void matrículaToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <param name="conn">Parámetros de la conexión</param>
+        /// <param name="database">Tabla de la base de datos a la que se va a conectar</param>
+        public void saveDatabase(string conn, string database)
         {
-            string input = string.Empty;
-            int index = 0;
-            bool found = false;
+            Enabled = false;
+            progBar.Visible = true;
+            progLabel.Visible = true;
+            progText.Visible = true;
 
-            ShowInputDialog(ref input);
-            if (input != string.Empty)
+            if (Program.bbdd == null)
             {
-                foreach (Vehiculo veh in Program.vehiculos)
-                {
-                    if (veh.Matricula == input)
-                    {
-                        found = true;
-                        break;
-                    }
-                    index++;
-                }
+                Auxiliar.loadDatabase(conn, database);
+            }
 
-                if (found)
+            MySqlConnection save = new MySqlConnection(condata);
+            bool existe = false;
+
+            /*if (Program.bbdd.Count != 0)
+            {
+                for (int i = 0; i < Program.vehiculos.Count; i++)
                 {
-                    MessageBox.Show("Se ha encontrado el vehículo con matrícula " + input, "Vehículo encontrado", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                    initForm(index);
-                }
-                else
-                {
-                    MessageBox.Show("No se ha encontrado el vehículo con matrícula " + input, "Vehículo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    for (int j = 0; j < Program.bbdd.Count; j++)
+                    {
+                        if (Program.vehiculos[i].Matricula == Program.bbdd[j].Matricula)
+                        {
+                            existe = true;
+                            Auxiliar.Query(save, i, j, existe);
+                            break;
+                        }
+
+                    }
+                    if (!existe)
+                    {
+                        Auxiliar.Query(save, i, 0, existe);
+                    }
+
+                    int percentage = (i + 1) * 100 / Program.vehiculos.Count;
+                    progBar.Value = percentage;
+                    progText.Text = ((percentage * Program.vehiculos.Count) / 100).ToString() + " de " + Program.vehiculos.Count.ToString();
                 }
             }
-        }
-
-        /// <summary>
-        /// Función encargada de generar un cuadro de búsqueda para 
-        /// la matrícula de un vehículo. 
-        /// </summary>
-        /// <param name="input">String pasado por referencia que almacena la cadena introducida</param>
-        /// <returns>La ventana de busqueda</returns>
-        private static DialogResult ShowInputDialog(ref string input)
-        {
-            Size size = new Size(300, 70);
-            Form inputBox = new Form();
-
-            inputBox.FormBorderStyle = FormBorderStyle.FixedDialog;
-            inputBox.ClientSize = size;
-            inputBox.Text = "Introduzca matrícula";
-
-            TextBox textBox = new TextBox();
-            textBox.Size = new Size(size.Width - 10, 23);
-            textBox.Location = new Point(5, 5);
-            textBox.Text = input;
-            inputBox.Controls.Add(textBox);
-
-            Button buscarBoton = new Button();
-            buscarBoton.DialogResult = DialogResult.OK;
-            buscarBoton.Name = "buscarBoton";
-            buscarBoton.Size = new Size(75, 23);
-            buscarBoton.Text = "Buscar";
-            buscarBoton.Location = new Point(size.Width - 80 - 80, 39);
-            inputBox.Controls.Add(buscarBoton);
-
-            Button cancelBoton = new Button();
-            cancelBoton.DialogResult = DialogResult.Cancel;
-            cancelBoton.Name = "cancelBoton";
-            cancelBoton.Size = new Size(75, 23);
-            cancelBoton.Text = "Cancelar";
-            cancelBoton.Location = new Point(size.Width - 80, 39);
-            inputBox.Controls.Add(cancelBoton);
-
-            inputBox.AcceptButton = buscarBoton;
-            inputBox.CancelButton = cancelBoton;
-
-            DialogResult result = inputBox.ShowDialog();
-            input = textBox.Text;
-            return result;
-        }
-
-        /// <summary>
-        /// Opción del menú contextual encargada de guardar el fichero.
-        /// Se le ha añadido la opción de guardar el fichero como .bin
-        /// para poder reabrirlo más tarde con el programa de nuevo.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void guardarInformeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog informe = new SaveFileDialog();
-            informe.Filter = "Archivo de texto|*.txt|Archivo de datos|*.bin";
-            informe.Title = "Guardar informe como...";
-            informe.ShowDialog();
-                if (informe.FileName != "")
+            else
+            {*/
+                MySqlCommand com = save.CreateCommand();
+                save.Open();
+                com.CommandText = "delete from vehiculos where 1=1";
+                com.ExecuteNonQuery();
+                save.Close();
+                for (int i = 0; i < Program.vehiculos.Count; i++)
                 {
-                    if (informe.FileName.Contains(".bin"))
-                    {
-                        Auxiliar.Save_File(Program.vehiculos, informe.FileName);
-                    }
-                    else
-                    {
-                        Auxiliar.generarInforme(informe.FileName);
-                    }
+                    Auxiliar.Query(save, i, existe);
                 }
+            //}
+
+            MessageBox.Show("Tarea finalizada.");
+            progBar.Visible = false;
+            progLabel.Visible = false;
+            progText.Visible = false;
+            Enabled = true;   
+            
         }
 
-        private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog abrir = new OpenFileDialog();
-            abrir.Filter = "Archivo de datos|*.bin";
-            abrir.Title = "Abrir informe";
-            abrir.ShowDialog();
-                if (abrir.FileName != "")
-                {
-                    Program.vehiculos = Auxiliar.Read_File(abrir.FileName);
-                    initForm(0);
-                }
+        
 
-        }
-
-        private void baseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            Auxiliar.saveDatabase(condata, "vehiculos");
-        }
-
+                    
         
     }
 }

@@ -22,5 +22,16 @@ namespace Problema3.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("server=quo605.conzetapublicidad.es;user id=qxt173;password=Vehiculos12;database=q" +
+            "uo605")]
+        public string quo605ConnectionString {
+            get {
+                return ((string)(this["quo605ConnectionString"]));
+            }
+        }
     }
 }
