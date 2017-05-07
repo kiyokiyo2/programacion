@@ -1,6 +1,6 @@
 ﻿namespace Problema3
 {
-    partial class Form1
+    partial class Explorador
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Explorador));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
@@ -64,6 +64,8 @@
             this.progText = new System.Windows.Forms.Label();
             this.progLabel = new System.Windows.Forms.Label();
             this.conectarALaBaseDeDatosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.acercaDeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -71,7 +73,7 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(99, 131);
+            this.comboBox1.Location = new System.Drawing.Point(99, 107);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 0;
@@ -93,7 +95,7 @@
             this.bindingNavigatorDeleteItem});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(291, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(301, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -207,10 +209,11 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.archivoToolStripMenuItem,
             this.buscarToolStripMenuItem,
-            this.volcarToolStripMenuItem});
+            this.volcarToolStripMenuItem,
+            this.ayudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(291, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(301, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -256,7 +259,7 @@
             // matrículaToolStripMenuItem
             // 
             this.matrículaToolStripMenuItem.Name = "matrículaToolStripMenuItem";
-            this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.matrículaToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.matrículaToolStripMenuItem.Text = "Matrícula";
             this.matrículaToolStripMenuItem.Click += new System.EventHandler(this.matrículaToolStripMenuItem_Click);
             // 
@@ -289,7 +292,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 102);
+            this.label1.Location = new System.Drawing.Point(36, 78);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 4;
@@ -298,7 +301,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(36, 166);
+            this.label2.Location = new System.Drawing.Point(36, 142);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(42, 13);
             this.label2.TabIndex = 5;
@@ -307,7 +310,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(37, 134);
+            this.label3.Location = new System.Drawing.Point(37, 110);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 6;
@@ -316,7 +319,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(37, 195);
+            this.label4.Location = new System.Drawing.Point(37, 171);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 13);
             this.label4.TabIndex = 7;
@@ -324,28 +327,28 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(99, 99);
+            this.textBox1.Location = new System.Drawing.Point(99, 75);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 8;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(99, 163);
+            this.textBox2.Location = new System.Drawing.Point(99, 139);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(121, 20);
             this.textBox2.TabIndex = 9;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(99, 192);
+            this.textBox3.Location = new System.Drawing.Point(99, 168);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(121, 20);
             this.textBox3.TabIndex = 10;
             // 
             // progBar
             // 
-            this.progBar.Location = new System.Drawing.Point(99, 218);
+            this.progBar.Location = new System.Drawing.Point(99, 194);
             this.progBar.Name = "progBar";
             this.progBar.Size = new System.Drawing.Size(121, 23);
             this.progBar.TabIndex = 11;
@@ -353,7 +356,7 @@
             // progText
             // 
             this.progText.AutoSize = true;
-            this.progText.Location = new System.Drawing.Point(226, 225);
+            this.progText.Location = new System.Drawing.Point(228, 201);
             this.progText.Name = "progText";
             this.progText.Size = new System.Drawing.Size(0, 13);
             this.progText.TabIndex = 12;
@@ -362,7 +365,7 @@
             // 
             this.progLabel.AutoSize = true;
             this.progLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.progLabel.Location = new System.Drawing.Point(31, 225);
+            this.progLabel.Location = new System.Drawing.Point(31, 201);
             this.progLabel.Name = "progLabel";
             this.progLabel.Size = new System.Drawing.Size(57, 13);
             this.progLabel.TabIndex = 13;
@@ -375,12 +378,27 @@
             this.conectarALaBaseDeDatosToolStripMenuItem.Text = "Conectar a la base de datos";
             this.conectarALaBaseDeDatosToolStripMenuItem.Click += new System.EventHandler(this.conectarALaBaseDeDatosToolStripMenuItem_Click);
             // 
-            // Form1
+            // ayudaToolStripMenuItem
+            // 
+            this.ayudaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.acercaDeToolStripMenuItem});
+            this.ayudaToolStripMenuItem.Name = "ayudaToolStripMenuItem";
+            this.ayudaToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.ayudaToolStripMenuItem.Text = "Ayuda";
+            // 
+            // acercaDeToolStripMenuItem
+            // 
+            this.acercaDeToolStripMenuItem.Name = "acercaDeToolStripMenuItem";
+            this.acercaDeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.acercaDeToolStripMenuItem.Text = "Acerca de";
+            this.acercaDeToolStripMenuItem.Click += new System.EventHandler(this.acercaDeToolStripMenuItem_Click);
+            // 
+            // Explorador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(291, 254);
+            this.ClientSize = new System.Drawing.Size(301, 254);
             this.Controls.Add(this.progLabel);
             this.Controls.Add(this.progText);
             this.Controls.Add(this.progBar);
@@ -396,8 +414,8 @@
             this.Controls.Add(this.comboBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Explorador";
+            this.Text = "Gestión de vehículos";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
@@ -445,6 +463,8 @@
         private System.Windows.Forms.Label progLabel;
         private System.Windows.Forms.ToolStripMenuItem descargarMenu;
         private System.Windows.Forms.ToolStripMenuItem conectarALaBaseDeDatosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ayudaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem acercaDeToolStripMenuItem;
     }
 }
 

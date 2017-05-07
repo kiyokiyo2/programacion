@@ -12,14 +12,19 @@ using MySql.Data.MySqlClient;
 
 namespace Problema3
 {
-    public partial class Form1 : Form
+    /// <summary>
+    /// Formulario donde se gestionarán los datos sobre los vehículos
+    /// </summary>
+    public partial class Explorador : Form
     {
 
         static string lastItem = string.Empty;
-        static string condata = "Server=82.223.113.38;Database=quo605;User ID=qxt173;Password=Vehiculos12;";
+        static string condata = Auxiliar.connectionData();
 
-
-        public Form1()
+        /// <summary>
+        /// Inicializador del formulario Explorador()
+        /// </summary>
+        public Explorador()
         {
             InitializeComponent();
             Program.vehiculos = new List<Vehiculo>();
@@ -29,6 +34,8 @@ namespace Problema3
             
         }
 
+                    #region(Carga del formulario y los ficheros)
+
 
         /// <summary>
         /// Se ejecuta al cargar el formulario
@@ -37,15 +44,15 @@ namespace Problema3
         /// <param name="e"></param>
     
         private void Form1_Load(object sender, EventArgs e)
+        {            
+            File_Load(); 
+        }
+
+        /// <summary>
+        /// Crea un nuevo fichero "data.bin" con datos sobre vehículos
+        /// </summary>
+        private void generarFichero()
         {
-            //Auxiliar.loadDatabase(condata, "vehiculos");
-            File_Load();
-            
-            
-           /* 
-            *   Código utilizado para rellenar el archivo con datos.
-            *
-            
             List<Vehiculo> t = new List<Vehiculo>();
             Vehiculo lala = new Vehiculo("1111 BBB", "Ford", "Escort", "Burdeo");
             Vehiculo lele = new Vehiculo("1112 BBB", "Ford", "Escort", "Burdeo");
@@ -55,15 +62,9 @@ namespace Problema3
             t.Add(lele);
             t.Add(lili);
             t.Add(lolo);
-            Auxiliar.Save_File(t,"data.bin");
-            
-            * 
-            * 
-            */
-
-
-            
+            Auxiliar.Save_File(t, "data.bin");
         }
+
 
         /// <summary>
         /// Comprueba la existencia de un archivo de datos y lo carga. En caso de que no exista, lo crea.
@@ -151,9 +152,11 @@ namespace Problema3
             
         }
 
+       
+
+
         
 
-        // 
         /// <summary>
         /// Se controla si quiere o no guardar los cambios realizados en los campos
         /// antes de cambiar de registro
@@ -165,7 +168,7 @@ namespace Problema3
         {            
             if (Program.vehiculos[int.Parse(bindingNavigatorPositionItem.Text) - 1].Matricula != textBox1.Text)
             {
-                if (MessageBox.Show("", "", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Se han detectado cambios en los datos.\n¿Desea guardarlos? No sobreescribirán los datos del fichero.", "Cambios detectados", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     if (index == -1)
                     {
@@ -182,9 +185,10 @@ namespace Problema3
 
 
 
+        #endregion
 
 
-
+                    #region(Menú contextual)
         // MENÚ CONTEXTUAL
 
 
@@ -332,6 +336,12 @@ namespace Problema3
             }
         }
 
+
+        /// <summary>
+        /// Se encarga de abrir y decodificar un ficheros de datos en formato .bin
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void abrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog abrir = new OpenFileDialog();
@@ -346,18 +356,87 @@ namespace Problema3
 
         }
 
-
-        private void baseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Vuelca los datos que se están visualizando en una base de datos
+        /// MySQL remota.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void baseDeDatosToolStripMenuItem_Click(object sender, EventArgs e) //TODO LIMPIAR FUNCION
         {
-            saveDatabase(condata, "vehiculos");
+            Enabled = false;
+            progBar.Visible = true;
+            progLabel.Visible = true;
+            progText.Visible = true;
+
+            if (Program.bbdd == null)
+            {
+                Auxiliar.loadDatabase(condata, "vehiculos");
+            }
+
+            MySqlConnection save = new MySqlConnection(condata);
+            bool existe = false;
+
+            /*if (Program.bbdd.Count != 0)
+            {
+                for (int i = 0; i < Program.vehiculos.Count; i++)
+                {
+                    for (int j = 0; j < Program.bbdd.Count; j++)
+                    {
+                        if (Program.vehiculos[i].Matricula == Program.bbdd[j].Matricula)
+                        {
+                            existe = true;
+                            Auxiliar.Query(save, i, j, existe);
+                            break;
+                        }
+
+                    }
+                    if (!existe)
+                    {
+                        Auxiliar.Query(save, i, 0, existe);
+                    }
+
+                    int percentage = (i + 1) * 100 / Program.vehiculos.Count;
+                    progBar.Value = percentage;
+                    progText.Text = ((percentage * Program.vehiculos.Count) / 100).ToString() + " de " + Program.vehiculos.Count.ToString();
+                }
+            }
+            else
+            {*/
+                MySqlCommand com = save.CreateCommand();
+                save.Open();
+                com.CommandText = "delete from vehiculos where 1=1";
+                com.ExecuteNonQuery();
+                save.Close();
+                for (int i = 0; i < Program.vehiculos.Count; i++)
+                {
+                    Auxiliar.Query(save, i, existe);
+                }
+            //}
+
+            MessageBox.Show("Tarea finalizada.");
+            progBar.Visible = false;
+            progLabel.Visible = false;
+            progText.Visible = false;
+            Enabled = true;  
         }
 
+        /// <summary>
+        /// Genera y muestra un formulario con los datos de la base de datos remota
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mostrarBBDDToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MostrarDatos aux = new MostrarDatos();
             aux.ShowDialog();
         }
 
+        /// <summary>
+        /// Comprueba que hay conexión y descarga los datos de la base de datos remota
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void conectarALaBaseDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Auxiliar.loadDatabase(condata, "vehiculos"))
@@ -367,6 +446,10 @@ namespace Problema3
             }
         }
 
+        #endregion
+
+
+                    #region(Controles de la barra de navegacion (ToolStrip))
 
         // 
         // // //  // // //  // // //  // // //  // // //  // // //       CONTROLES DE LA
@@ -528,78 +611,13 @@ namespace Problema3
             }
         }
 
+        #endregion
 
-        
-        
-        /// <summary>
-        /// Vuelca los datos que se están visualizando en una base de datos
-        /// MySQL remota.
-        /// </summary>
-        /// <param name="conn">Parámetros de la conexión</param>
-        /// <param name="database">Tabla de la base de datos a la que se va a conectar</param>
-        public void saveDatabase(string conn, string database)
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Enabled = false;
-            progBar.Visible = true;
-            progLabel.Visible = true;
-            progText.Visible = true;
-
-            if (Program.bbdd == null)
-            {
-                Auxiliar.loadDatabase(conn, database);
-            }
-
-            MySqlConnection save = new MySqlConnection(condata);
-            bool existe = false;
-
-            /*if (Program.bbdd.Count != 0)
-            {
-                for (int i = 0; i < Program.vehiculos.Count; i++)
-                {
-                    for (int j = 0; j < Program.bbdd.Count; j++)
-                    {
-                        if (Program.vehiculos[i].Matricula == Program.bbdd[j].Matricula)
-                        {
-                            existe = true;
-                            Auxiliar.Query(save, i, j, existe);
-                            break;
-                        }
-
-                    }
-                    if (!existe)
-                    {
-                        Auxiliar.Query(save, i, 0, existe);
-                    }
-
-                    int percentage = (i + 1) * 100 / Program.vehiculos.Count;
-                    progBar.Value = percentage;
-                    progText.Text = ((percentage * Program.vehiculos.Count) / 100).ToString() + " de " + Program.vehiculos.Count.ToString();
-                }
-            }
-            else
-            {*/
-                MySqlCommand com = save.CreateCommand();
-                save.Open();
-                com.CommandText = "delete from vehiculos where 1=1";
-                com.ExecuteNonQuery();
-                save.Close();
-                for (int i = 0; i < Program.vehiculos.Count; i++)
-                {
-                    Auxiliar.Query(save, i, existe);
-                }
-            //}
-
-            MessageBox.Show("Tarea finalizada.");
-            progBar.Visible = false;
-            progLabel.Visible = false;
-            progText.Visible = false;
-            Enabled = true;   
-            
+            Acerca ayuda = new Acerca();
+            ayuda.ShowDialog();
         }
-
-        
-
-                    
         
     }
 }

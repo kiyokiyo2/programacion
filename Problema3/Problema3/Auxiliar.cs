@@ -14,7 +14,9 @@ using MySql.Data.MySqlClient;
 
 namespace Problema3
 {
-    
+    /// <summary>
+    /// Clase que almacena métodos auxiliares que podrían ser usados desde distintos formularios.
+    /// </summary>
     class Auxiliar
     {
 
@@ -95,6 +97,7 @@ namespace Problema3
 
         #endregion
 
+        #region(Gestión de base de datos)
         /// <summary>
         /// Se encarga de conectar a la base de datos y descargar la información de la tabla indicada
         /// </summary>
@@ -154,8 +157,20 @@ namespace Problema3
             save.Close();
         }
 
-        
-        
+        public static string connectionData()
+        {
+            string linea;
+            string data = "";
+            StreamReader datos = new StreamReader("database.conf");
+            while((linea = datos.ReadLine()) != null)
+            {
+                data += linea;
+            }
+            datos.Close();
+            return data;
+        }
+        #endregion
+
     }
     
 

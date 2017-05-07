@@ -10,16 +10,25 @@ using System.Windows.Forms;
 
 namespace Problema3
 {
+    /// <summary>
+    /// Formulario encargado de mostrar los datos descargados de una base de datos remota
+    /// </summary>
     public partial class MostrarDatos : Form
     {
-        static string condata = "Server=82.223.113.38;Database=quo605;User ID=qxt173;Password=Vehiculos12;";
+        static string condata = Auxiliar.connectionData();
 
+        /// <summary>
+        /// Inicializador del formulario MostrarDatos()
+        /// </summary>
         public MostrarDatos()
         {
             InitializeComponent();
             
         }
 
+        /// <summary>
+        /// Descarga los datos de la base de datos remota y los muestra en un DataGridView
+        /// </summary>
         public void load()
         {
             dataGridView1.ColumnCount = 4;
@@ -40,11 +49,21 @@ namespace Problema3
 
         }
 
+        /// <summary>
+        /// Ejecuta el método load()
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             load();
         }
 
+        /// <summary>
+        /// Cierra el formulario
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();

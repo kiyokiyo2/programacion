@@ -117,8 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="conducir-signo-motorizado-automovil-coche-icono-del-simbolo_121-99123 copia" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\conducir-signo-motorizado-automovil-coche-icono-del-simbolo_121-99123 copia.PNG;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAQAAAAAADoAgAAFgAAACgAAAAgAAAAQAAAAAEABAAAAAAAgAIAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAgAAAAAAAAAAAAAAAAAAABVAIAAAAAAAAAAAAAAAACQAFVQAIAAAAAAAAAAAAAJC5
+        AABVVQCAAAAAAAAAAAkLmZmZAABVUACAAAAAAACQuZmZmZmZAAVVUAgAAAAJC5kAAAAAAJmQAAVQAAAA
+        kLkAnZmZmZkAGRkQAAAACQuQubnZmZmZGQGRkZAAAJC5C5udmZmZmZGQGRkAAAALmwu5udmZmZkZEJGQ
+        AAAAubkLm52ZmZmZkZAZAAAAAAubkLm52ZmZmRkBkAAAAAAIAJC7m52ZmZmRCQAAAAAAAAAAubnZmZmZ
+        GQAAAAAAAAAACLubnZmZkZGAAAAAAAAAAAALudmZmZkQAAAAAAAAAAAAC5udmZmRkAAAAAAAAAAAAAu5
+        2ZmZmRAAAAAAAAAAAACLm52ZmZGYAAAAAAAAAAAAALm52ZkZAAAAAAAAAAAAAAC7nZmZkQAAAAAAAAAA
+        AAAAubnZmRkAAAAAAAAAAAAACLudmZGRgAAAAAAAAAAAAAAJudmZEAAAAAAAAAAAAAAAC5udkZAAAAAA
+        AAAAAAAAAAu52ZkQAAAAAAAAAAAAAACLm52RmAAAAAAAAAAAAAAAALm5GQAAAAAAAAAAAAAAAAi7AJGA
+        AAAAAAAAAAAAAAAAi7sIAAAAAAAAAAAAAAAAAAgAgAAAAAAAAAD/x////4D///8AD//+AAH//AAAH/gA
+        AAPwAAAD4AAAA8AAAAOAAAAHgAAAD4AAAB+AAAA/4AAAf/wAAP/+AAH//wAD//8AA///AAP//wAD//+A
+        B///gAf//4AH//+AB///wA///8AP///AD///wA///+Af///gH///8D////h//w==
+</value>
   </data>
 </root>

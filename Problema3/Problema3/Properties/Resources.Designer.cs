@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Problema3.Properties {
+namespace Problema3y4.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Problema3.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Problema3.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Problema3y4.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,16 @@ namespace Problema3.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap conducir_signo_motorizado_automovil_coche_icono_del_simbolo_121_99123_copia {
+            get {
+                object obj = ResourceManager.GetObject("conducir-signo-motorizado-automovil-coche-icono-del-simbolo_121-99123 copia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

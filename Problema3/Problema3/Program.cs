@@ -17,10 +17,20 @@ namespace Problema3
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Explorador());
 
         }
+
+        /// <summary>
+        /// Se declara
+        /// la lista de datos de vehículos
+        /// </summary>        
         public static List<Vehiculo> vehiculos;
+
+        /// <summary>
+        /// Se declara 
+        /// la lista de datos de vehículos (descargada de internet)
+        /// </summary>
         public static List<Vehiculo> bbdd;
     }
 }

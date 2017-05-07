@@ -7,6 +7,9 @@ using System.IO;
 
 namespace Problema3
 {
+    /// <summary>
+    /// Almacena los datos de vehículos y los métodos relacionados
+    /// </summary>
     class Vehiculo
     {
         string matricula;
@@ -19,6 +22,9 @@ namespace Problema3
         const int TAM_MARCA = 20;
         const int TAM_MODELO = 40;
         const int TAM_COLOR = 15;
+
+                #region(Constructores)
+
         public string Color
         {
             get
@@ -53,9 +59,13 @@ namespace Problema3
         }
 
 
-        //
-        // CONSTRUCTOR
-        //
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="matricula">Identificación del vehículo</param>
+        /// <param name="marca">Marca del vehículo</param>
+        /// <param name="modelo">Modelo del vehículo</param>
+        /// <param name="color">Color del vehículo</param>
         public Vehiculo(string matricula, string marca, string modelo, string color)
         {            
             this.matricula = matricula;
@@ -66,15 +76,16 @@ namespace Problema3
 
       
        
-        // Constructor que lee los datos de un BinaryReader
+        /// <summary>
+        /// Lee los datos de un vehiculo a traves de un BinaryReader
+        /// </summary>
+        /// <param name="reader">Origen de los datos del vehículo</param>
         public Vehiculo(BinaryReader reader)
         {
             Read(reader);
         }
 
-        //
-        // METODOS
-        //
+
 
 
 
@@ -90,12 +101,13 @@ namespace Problema3
             }
         }
 
-        
+        #endregion
 
+                #region(Funciones de lectura y escritura de vehículos en un fichero)
         /// <summary>
-        /// Guarda el objeto en un stream de tipo BinaryWriter con un registro de tamaño fijo
+        /// Guarda el vehículo en un stream de tipo BinaryWriter con un registro de tamaño fijo
         /// </summary>
-        /// <param name="writer">BinaryWriter en el que guardamos el objeto</param>
+        /// <param name="writer">BinaryWriter en el que guardamos el vehículo</param>
 
         public void Write(BinaryWriter writer)
         {
@@ -123,7 +135,7 @@ namespace Problema3
 
         /// <summary>
         /// Lee un objeto del stream BinaryReader. Este objeto debe haber sido guardado
-        /// con el método Write del objeto Persona.
+        /// con el método Write del objeto Vehículo.
         /// 
         /// Si el formato es incorrecto o se ha llegado al final del stream
         /// el metodo lanzará la excepción apropiada
@@ -137,8 +149,7 @@ namespace Problema3
 
             matricula = reader.ReadString();
             marca = reader.ReadString();
-            modelo = reader.ReadString();
-            // Aunque el tipo es float, en el BinaryWriter solo escribe 'double'
+            modelo = reader.ReadString();            
             color = reader.ReadString();
 
             long posFin = reader.BaseStream.Position;
@@ -159,5 +170,6 @@ namespace Problema3
             st.Seek(nReg * TamanyoRegistro, SeekOrigin.Begin);
         }
 
+        #endregion
     }
 }
