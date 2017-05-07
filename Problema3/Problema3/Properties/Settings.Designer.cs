@@ -33,5 +33,23 @@ namespace Problema3y4.Properties {
                 return ((string)(this["quo605ConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public int Limit {
+            get {
+                return ((int)(this["Limit"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public int LimiteMarca {
+            get {
+                return ((int)(this["LimiteMarca"]));
+            }
+        }
     }
 }

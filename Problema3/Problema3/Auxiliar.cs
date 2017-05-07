@@ -157,6 +157,18 @@ namespace Problema3
             save.Close();
         }
 
+        /// <summary>
+        /// Función que se conecta a la base de datos donde se encuentra la tabla 'vehículos'.
+        /// La estructura del fichero debe ser la siguiente:
+        /// 
+        /// Server=IpDeLaBaseDeDatos;
+        /// Database=NombreDeLaBaseDeDatos;
+        /// User ID=Usuario;
+        /// Password=Contraseña;
+        /// 
+        /// Se recomienda copiar y pegar las cuatro lineas de texto para modificarlas.
+        /// </summary>
+        /// <returns></returns>
         public static string connectionData()
         {
             string linea;

@@ -63,6 +63,7 @@ namespace Problema3
             t.Add(lili);
             t.Add(lolo);
             Auxiliar.Save_File(t, "data.bin");
+            MessageBox.Show("Fichero generado exitosamente.");
         }
 
 
@@ -446,6 +447,25 @@ namespace Problema3
             }
         }
 
+
+        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Acerca ayuda = new Acerca();
+            ayuda.ShowDialog();
+        }
+
+        private void generarFicheroDeDatosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                generarFichero();
+            }
+            catch
+            {
+                MessageBox.Show("No se ha podido crear el fichero.");
+            }
+        }
+
         #endregion
 
 
@@ -613,11 +633,7 @@ namespace Problema3
 
         #endregion
 
-        private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Acerca ayuda = new Acerca();
-            ayuda.ShowDialog();
-        }
+        
         
     }
 }
