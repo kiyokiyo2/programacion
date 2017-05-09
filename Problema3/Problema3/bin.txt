@@ -1,0 +1,40 @@
+--- LISTADO DE VEHÍCULOS ---
+
+-- NÚMERO TOTAL DE VEHÍCULOS: 5 --
+
+ 
+-- Vehículo nº 1 --
+Matrícula: 1111 BBB 
+Marca: Ford 
+Modelo: Escort 
+Color: Burdeo 
+-------------------
+
+-- Vehículo nº 2 --
+Matrícula: 1112 BBB 
+Marca: Ford 
+Modelo: Escort 
+Color: Burdeo 
+-------------------
+
+-- Vehículo nº 3 --
+Matrícula: 1113 BBB 
+Marca: Ford 
+Modelo: Escort 
+Color: Burdeo 
+-------------------
+
+-- Vehículo nº 4 --
+Matrícula: 1114 BBB 
+Marca: Ford 
+Modelo: Escort 
+Color: Burdeo 
+-------------------
+
+-- Vehículo nº 5 --
+Matrícula: 1111 BBB 
+Marca: Casita 
+Modelo: Escort 
+Color: Burdeo 
+-------------------
+
