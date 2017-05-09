@@ -43,7 +43,7 @@ namespace Problema3
                 }
                 catch (System.IO.EndOfStreamException)
                 {
-                   // MessageBox.Show("FIN");
+                   
                     lectura = false;
                 }
             }
